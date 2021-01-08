@@ -115,10 +115,10 @@ public class GamePanel extends JPanel implements ActionListener{
     public void checkPowerUp() {
         if((x[0] == powerX) && (y[0] == powerY)) {
             timer = new Timer(100,this);
-            timer.start();
+            //timer.start();
             //timer = new Timer(DELAY,this);
             //timer.start();
-            newPowerUp();
+            //newPowerUp();
         }
     }
     public void checkCollisions() {
