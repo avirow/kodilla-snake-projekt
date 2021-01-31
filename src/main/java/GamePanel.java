@@ -11,8 +11,8 @@ public class GamePanel extends JPanel implements ActionListener{
     static final int UNIT_SIZE = 50;
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/(UNIT_SIZE*UNIT_SIZE);
     static final int DELAY = 175;
-    final int x[] = new int[GAME_UNITS];
-    final int y[] = new int[GAME_UNITS];
+    final int leftRight[] = new int[GAME_UNITS]; //Left and Right
+    final int upDown[] = new int[GAME_UNITS]; // Up and Down
     int bodyParts = 6;
     int applesEaten;
     int appleX;
@@ -55,12 +55,12 @@ public class GamePanel extends JPanel implements ActionListener{
             for(int i = 0; i< bodyParts;i++) {
                 if(i == 0) {
                     g.setColor(Color.green);
-                    g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                    g.fillRect(leftRight[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
                 else {
                     g.setColor(new Color(45,180,0));
 
-                    g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                    g.fillRect(leftRight[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
             }
             g.setColor(Color.red);
@@ -85,7 +85,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
     public void move(){
         for(int i = bodyParts;i>0;i--) {
-            x[i] = x[i-1];
+            leftRight[i] = leftRight[i-1];
             y[i] = y[i-1];
         }
 
@@ -97,55 +97,35 @@ public class GamePanel extends JPanel implements ActionListener{
                 y[0] = y[0] + UNIT_SIZE;
                 break;
             case 'L':
-                x[0] = x[0] - UNIT_SIZE;
+                leftRight[0] = leftRight[0] - UNIT_SIZE;
                 break;
             case 'R':
-                x[0] = x[0] + UNIT_SIZE;
+                leftRight[0] = leftRight[0] + UNIT_SIZE;
                 break;
         }
 
     }
     public void checkApple() {
-        if((x[0] == appleX) && (y[0] == appleY)) {
+        if((leftRight[0] == appleX) && (y[0] == appleY)) {
             bodyParts++;
             applesEaten++;
             newApple();
         }
     }
-    public void checkPowerUp() {
-        if((x[0] == powerX) && (y[0] == powerY)) {
 
-            timer = new Timer(75,this);
-            timer.start();
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            timer = new Timer(DELAY,this);
-            timer.start();
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            newPowerUp();
-
-        }
-    }
     public void checkCollisions() {
 
         for(int i = bodyParts;i>0;i--) {
-            if((x[0] == x[i])&& (y[0] == y[i])) {
+            if((leftRight[0] == leftRight[i])&& (y[0] == y[i])) {
                 running = false;
             }
         }
 
-        if(x[0] < 0) {
+        if(leftRight[0] < 0) {
             running = false;
         }
 
-        if(x[0] > SCREEN_WIDTH) {
+        if(leftRight[0] > SCREEN_WIDTH) {
             running = false;
         }
 
@@ -180,7 +160,6 @@ public class GamePanel extends JPanel implements ActionListener{
             move();
             checkApple();
             checkCollisions();
-            checkPowerUp();
         }
         repaint();
     }
