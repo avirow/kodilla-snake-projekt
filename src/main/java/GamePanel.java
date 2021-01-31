@@ -86,15 +86,15 @@ public class GamePanel extends JPanel implements ActionListener{
     public void move(){
         for(int i = bodyParts;i>0;i--) {
             leftRight[i] = leftRight[i-1];
-            y[i] = y[i-1];
+            upDown[i] = upDown[i-1];
         }
 
         switch(direction) {
             case 'U':
-                y[0] = y[0] - UNIT_SIZE;
+                upDown[0] = upDown[0] - UNIT_SIZE;
                 break;
             case 'D':
-                y[0] = y[0] + UNIT_SIZE;
+                upDown[0] = upDown[0] + UNIT_SIZE;
                 break;
             case 'L':
                 leftRight[0] = leftRight[0] - UNIT_SIZE;
@@ -106,7 +106,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
     }
     public void checkApple() {
-        if((leftRight[0] == appleX) && (y[0] == appleY)) {
+        if((leftRight[0] == appleX) && (upDown[0] == appleY)) {
             bodyParts++;
             applesEaten++;
             newApple();
@@ -116,7 +116,7 @@ public class GamePanel extends JPanel implements ActionListener{
     public void checkCollisions() {
 
         for(int i = bodyParts;i>0;i--) {
-            if((leftRight[0] == leftRight[i])&& (y[0] == y[i])) {
+            if((leftRight[0] == leftRight[i])&& (upDown[0] == upDown[i])) {
                 running = false;
             }
         }
@@ -129,11 +129,11 @@ public class GamePanel extends JPanel implements ActionListener{
             running = false;
         }
 
-        if(y[0] < 0) {
+        if(upDown[0] < 0) {
             running = false;
         }
 
-        if(y[0] > SCREEN_HEIGHT) {
+        if(upDown[0] > SCREEN_HEIGHT) {
             running = false;
         }
 
