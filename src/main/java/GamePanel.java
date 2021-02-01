@@ -1,8 +1,8 @@
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class GamePanel extends JPanel implements ActionListener{
 
@@ -11,8 +11,8 @@ public class GamePanel extends JPanel implements ActionListener{
     static final int UNIT_SIZE = 50;
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/(UNIT_SIZE*UNIT_SIZE);
     static final int DELAY = 175;
-    final int leftRight[] = new int[GAME_UNITS]; //Left and Right
-    final int upDown[] = new int[GAME_UNITS]; // Up and Down
+    final int[] leftRight = new int[GAME_UNITS];
+    final int[] upDown = new int[GAME_UNITS];
     int bodyParts = 6;
     int applesEaten;
     int appleX;
@@ -26,10 +26,10 @@ public class GamePanel extends JPanel implements ActionListener{
 
     GamePanel(){
         random = new Random();
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
-        this.setBackground(Color.black);
-        this.setFocusable(true);
-        this.addKeyListener(new MyKeyAdapter());
+        setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
+        setBackground(Color.black);
+        setFocusable(true);
+        addKeyListener(new MyKeyAdapter());
         startGame();
     }
     public void startGame() {
@@ -39,6 +39,7 @@ public class GamePanel extends JPanel implements ActionListener{
         timer = new Timer(DELAY,this);
         timer.start();
     }
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
@@ -74,13 +75,13 @@ public class GamePanel extends JPanel implements ActionListener{
 
     }
     public void newApple(){
-        appleX = random.nextInt((int)(SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
-        appleY = random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+        appleX = random.nextInt((SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
+        appleY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
     }
 
     public void newPowerUp(){
-        powerX = random.nextInt((int)(SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
-        powerY = random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+        powerX = random.nextInt((SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
+        powerY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
     }
 
     public void move(){
@@ -101,6 +102,8 @@ public class GamePanel extends JPanel implements ActionListener{
                 break;
             case 'R':
                 leftRight[0] = leftRight[0] + UNIT_SIZE;
+                break;
+            default:
                 break;
         }
 
@@ -144,9 +147,9 @@ public class GamePanel extends JPanel implements ActionListener{
     public void gameOver(Graphics g) {
 
         g.setColor(Color.red);
-        g.setFont( new Font("Ink Free",Font.BOLD, 40));
+        g.setFont( new Font("Ink Free2",Font.BOLD, 40));
         FontMetrics metrics1 = getFontMetrics(g.getFont());
-        g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
+        g.drawString("Your Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Your Score: "+applesEaten))/2, g.getFont().getSize());
 
         g.setColor(Color.red);
         g.setFont( new Font("Ink Free",Font.BOLD, 75));
@@ -187,6 +190,8 @@ public class GamePanel extends JPanel implements ActionListener{
                     if(direction != 'U') {
                         direction = 'D';
                     }
+                    break;
+                default:
                     break;
             }
         }
